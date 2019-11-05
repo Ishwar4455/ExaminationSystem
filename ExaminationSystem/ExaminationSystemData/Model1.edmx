@@ -1,0 +1,254 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ExaminationSystemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Batch">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BatchName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Course" Type="nvarchar" MaxLength="50" />
+          <Property Name="NoOfCandidate" Type="int" />
+        </EntityType>
+        <EntityType Name="Candidate">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RegisterationID" Type="int" />
+          <Property Name="CandidateName" Type="nvarchar" MaxLength="50" />
+          <Property Name="FatherName" Type="nvarchar" MaxLength="50" />
+          <Property Name="MotherName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Mobile" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="TestSchedule">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CandidateID" Type="int" />
+          <Property Name="BatchID" Type="int" />
+          <Property Name="TestName" Type="nvarchar" MaxLength="50" />
+          <Property Name="TimeAllowed" Type="nvarchar" MaxLength="50" />
+          <Property Name="NumberOfQuestions" Type="nvarchar" MaxLength="50" />
+          <Property Name="TestStartDate" Type="datetime" />
+          <Property Name="TestEndDate" Type="datetime" />
+          <Property Name="MaxMarks" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="PassMarks" Type="decimal" Precision="18" Scale="0" />
+        </EntityType>
+        <EntityType Name="UserLogin">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_TestSchedule_Batch">
+          <End Role="Batch" Type="Self.Batch" Multiplicity="0..1" />
+          <End Role="TestSchedule" Type="Self.TestSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Batch">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TestSchedule">
+              <PropertyRef Name="BatchID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TestSchedule_Candidate">
+          <End Role="Candidate" Type="Self.Candidate" Multiplicity="0..1" />
+          <End Role="TestSchedule" Type="Self.TestSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Candidate">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TestSchedule">
+              <PropertyRef Name="CandidateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ExaminationSystemModelStoreContainer">
+          <EntitySet Name="Batch" EntityType="Self.Batch" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Candidate" EntityType="Self.Candidate" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TestSchedule" EntityType="Self.TestSchedule" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserLogin" EntityType="Self.UserLogin" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_TestSchedule_Batch" Association="Self.FK_TestSchedule_Batch">
+            <End Role="Batch" EntitySet="Batch" />
+            <End Role="TestSchedule" EntitySet="TestSchedule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TestSchedule_Candidate" Association="Self.FK_TestSchedule_Candidate">
+            <End Role="Candidate" EntitySet="Candidate" />
+            <End Role="TestSchedule" EntitySet="TestSchedule" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ExaminationSystemModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Batch">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BatchName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Course" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NoOfCandidate" Type="Int32" />
+          <NavigationProperty Name="TestSchedules" Relationship="ExaminationSystemModel.FK_TestSchedule_Batch" FromRole="Batch" ToRole="TestSchedule" />
+        </EntityType>
+        <EntityType Name="UserLogin">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityContainer Name="ExaminationSystemEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Batches" EntityType="Self.Batch" />
+          <EntitySet Name="UserLogins" EntityType="Self.UserLogin" />
+          <EntitySet Name="TestSchedules" EntityType="ExaminationSystemModel.TestSchedule" />
+          <AssociationSet Name="FK_TestSchedule_Batch" Association="ExaminationSystemModel.FK_TestSchedule_Batch">
+            <End Role="Batch" EntitySet="Batches" />
+            <End Role="TestSchedule" EntitySet="TestSchedules" />
+          </AssociationSet>
+          <EntitySet Name="Candidates" EntityType="ExaminationSystemModel.Candidate" />
+          <AssociationSet Name="FK_TestSchedule_Candidate" Association="ExaminationSystemModel.FK_TestSchedule_Candidate">
+            <End Role="Candidate" EntitySet="Candidates" />
+            <End Role="TestSchedule" EntitySet="TestSchedules" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="TestSchedule">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CandidateID" Type="Int32" />
+          <Property Name="BatchID" Type="Int32" />
+          <Property Name="TestName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TimeAllowed" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NumberOfQuestions" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TestStartDate" Type="DateTime" Precision="3" />
+          <Property Name="TestEndDate" Type="DateTime" Precision="3" />
+          <Property Name="MaxMarks" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="PassMarks" Type="Decimal" Precision="18" Scale="0" />
+          <NavigationProperty Name="Batch" Relationship="ExaminationSystemModel.FK_TestSchedule_Batch" FromRole="TestSchedule" ToRole="Batch" />
+          <NavigationProperty Name="Candidate" Relationship="ExaminationSystemModel.FK_TestSchedule_Candidate" FromRole="TestSchedule" ToRole="Candidate" />
+        </EntityType>
+        <Association Name="FK_TestSchedule_Batch">
+          <End Type="ExaminationSystemModel.Batch" Role="Batch" Multiplicity="0..1" />
+          <End Type="ExaminationSystemModel.TestSchedule" Role="TestSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Batch">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TestSchedule">
+              <PropertyRef Name="BatchID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Candidate">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RegisterationID" Type="Int32" />
+          <Property Name="CandidateName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FatherName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MotherName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="TestSchedules" Relationship="ExaminationSystemModel.FK_TestSchedule_Candidate" FromRole="Candidate" ToRole="TestSchedule" />
+        </EntityType>
+        <Association Name="FK_TestSchedule_Candidate">
+          <End Type="ExaminationSystemModel.Candidate" Role="Candidate" Multiplicity="0..1" />
+          <End Type="ExaminationSystemModel.TestSchedule" Role="TestSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Candidate">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TestSchedule">
+              <PropertyRef Name="CandidateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ExaminationSystemModelStoreContainer" CdmEntityContainer="ExaminationSystemEntities">
+          <EntitySetMapping Name="Batches">
+            <EntityTypeMapping TypeName="ExaminationSystemModel.Batch">
+              <MappingFragment StoreEntitySet="Batch">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="BatchName" ColumnName="BatchName" />
+                <ScalarProperty Name="Course" ColumnName="Course" />
+                <ScalarProperty Name="NoOfCandidate" ColumnName="NoOfCandidate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserLogins">
+            <EntityTypeMapping TypeName="ExaminationSystemModel.UserLogin">
+              <MappingFragment StoreEntitySet="UserLogin">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TestSchedules">
+            <EntityTypeMapping TypeName="ExaminationSystemModel.TestSchedule">
+              <MappingFragment StoreEntitySet="TestSchedule">
+                <ScalarProperty Name="PassMarks" ColumnName="PassMarks" />
+                <ScalarProperty Name="MaxMarks" ColumnName="MaxMarks" />
+                <ScalarProperty Name="TestEndDate" ColumnName="TestEndDate" />
+                <ScalarProperty Name="TestStartDate" ColumnName="TestStartDate" />
+                <ScalarProperty Name="NumberOfQuestions" ColumnName="NumberOfQuestions" />
+                <ScalarProperty Name="TimeAllowed" ColumnName="TimeAllowed" />
+                <ScalarProperty Name="TestName" ColumnName="TestName" />
+                <ScalarProperty Name="BatchID" ColumnName="BatchID" />
+                <ScalarProperty Name="CandidateID" ColumnName="CandidateID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Candidates">
+            <EntityTypeMapping TypeName="ExaminationSystemModel.Candidate">
+              <MappingFragment StoreEntitySet="Candidate">
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="MotherName" ColumnName="MotherName" />
+                <ScalarProperty Name="FatherName" ColumnName="FatherName" />
+                <ScalarProperty Name="CandidateName" ColumnName="CandidateName" />
+                <ScalarProperty Name="RegisterationID" ColumnName="RegisterationID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="950ea6e31ba64343a023cd30ad078a65" Name="Diagram1">
+        <EntityTypeShape EntityType="ExaminationSystemModel.Batch" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExaminationSystemModel.UserLogin" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExaminationSystemModel.TestSchedule" Width="1.5" PointX="5" PointY="0.75" />
+        <AssociationConnector Association="ExaminationSystemModel.FK_TestSchedule_Batch" />
+        <EntityTypeShape EntityType="ExaminationSystemModel.Candidate" Width="1.5" PointX="5.375" PointY="6" />
+        <AssociationConnector Association="ExaminationSystemModel.FK_TestSchedule_Candidate" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
